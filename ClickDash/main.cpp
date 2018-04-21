@@ -5,13 +5,13 @@ Serial pc(USBTX, USBRX);
 
 //Some enums for state management
 enum PlayerState { LEFT, RIGHT, NONE };
-enum GameState { IN_PROGRESS, OVER };
+enum GameState { BEGIN, IN_PROGRESS, OVER };
 
 //Game timer
 Timer stopwatch;
 
 //Game state manager
-GameState gameState = IN_PROGRESS;
+GameState gameState = BEGIN;
 
 //Award manager
 volatile int playerWin = 0;
@@ -26,7 +26,7 @@ volatile int player1Steps = 0;
 
 //Player 2
 InterruptIn player2Left(p15);
-InterruptIn player2Right(p20);
+InterruptIn player2Right(p18);
 Timeout player2Bounce;
 PlayerState player2State = NONE;
 PlayerState player2Pressed = NONE;
@@ -118,17 +118,20 @@ int main()
 	player2Right.mode(PullUp);
 	
 	//Notify the players that the race is about to start
-	pc.printf("Runners to the blocks!\r\n");
+	pc.printf("\r\nRunners to the blocks!\r\n");
 	wait(1);
 	pc.printf("Take your marks!\r\n");
 	wait(1);
 	pc.printf("GO!\r\n");
 	stopwatch.start();
 	
+	gameState = IN_PROGRESS;
+	
 	while(1)
 	{
 		if(gameState == OVER)
 		{
+			pc.printf("Player 1: %d \tPlayer 2: %d \r\n", player1Steps, player2Steps);
 			pc.printf("Player %d wins!!! It took Player %d %f seconds to finish the race!", playerWin, playerWin, stopwatch.read());
 			
 			while(1){}
