@@ -130,7 +130,7 @@ int main()
 					roundState = END;
 				}
 				//If the correct switch was pressed
-				else if(switchesPress != 0 && (switchesPress >> (3 - (currentLetter - 'A'))) & 1)
+				else if(switchesPress != 0 && (switchesPress >> (currentLetter - 'A')) & 1)
 				{
 					roundWin = true;
 					roundTimeout.detach();
