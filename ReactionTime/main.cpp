@@ -148,8 +148,7 @@ int main()
 			case END:
 				timeLimit = 1.0;
 				writeToSevenSegment(mapLetterToInt('L'));
-				wait(3);
-				roundState = IDLE;
+				while(1){}
 				break;
 			default:
 				roundState = IDLE;
